@@ -89,6 +89,10 @@
                     <a href="https://forge.laravel.com">Forge</a>
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
+
+                <p>
+                    <a href="{{ url('authorization-code') }}" class="btn btn-primary">Connect With "Laravel Passport Vue" App</a>
+                </p>
             </div>
         </div>
     </body>

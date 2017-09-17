@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Http\Request;
+
 Route::get('/', function () {
 
     try {
@@ -42,6 +44,42 @@ Route::get('/', function () {
         echo "Unable to retrieve access token.";
     }
 
+});
+
+Route::get('/welcome', function () {
+
     return view('welcome');
+    
+});
+
+Route::get('/authorization-code', function () {
+
+    $query = http_build_query([
+        'client_id' => 4,
+        'redirect_uri' => 'http://laravel-passport-vue-client.int/callback',
+        'response_type' => 'code',
+        'scope' => ''
+    ]);
+
+    // return redirect("http://laravel-passport-vue.int/authorize?" . $query);
+    return redirect("http://laravel-passport-vue.int/oauth/authorize?" . $query);
+
+});
+
+Route::get('/callback', function (Request $request) {
+
+    $client = new GuzzleHttp\Client;
+
+    $response = $client->post('http://laravel-passport-vue.int/oauth/token', [
+        'form_params' => [
+            'grant_type' => 'authorization_code',
+            'client_id' => 4,
+            'client_secret' => '6rFBfNKfDnXIMfOqpYVgVEi4m0sSluBW2Vn0JMaB',
+            'redirect_uri' => 'http://laravel-passport-vue-client.int/callback',
+            'code' => $request->code
+        ]
+    ]);
+
+    return json_decode((string) $response->getBody(), true);
 
 });
